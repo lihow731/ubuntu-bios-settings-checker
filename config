@@ -1,0 +1,26 @@
+{
+    "default": {
+        "312": {
+            "value": true
+        },
+        "url": "https://www.canonical.com"
+    },
+    "Precision 7530": {
+        "pci": "1002",
+        "891": {
+            "value": false
+        }
+    },
+    "Precision 7730": {
+        "pci": "1002",
+        "891": {
+            "value": false
+        }
+    },
+    "OptiPlex 7070": {
+        "pci": "1002",
+        "891": {
+            "value": false
+        }
+    }
+}
