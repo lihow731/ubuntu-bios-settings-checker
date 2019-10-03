@@ -12,23 +12,24 @@ class UbuntuBIOSSettingsChecker:
    def __init__(self, configFile = "" )
 ```
 
-####Parameters
-##### configFile
+* Parameters
+  * configFile:
 The full file patch of the configure file.
 If you don't set it. The default configure file patch is
 /usr/share/UbuntuBIOSSettingsChecker/config.
 
-####member
-#####status
-######0: class is initialized successfully.
+* member
+  * status
 
-######-1: There are something wrong. Maybe the manufacturer is not support yet.
+    0: class is initialized successfully.
 
-#####support:
+    -1: There are something wrong. Maybe the manufacturer is not support yet.
 
-######True: The BIOS settings is proper.
+  * support:
 
-######False: The BIOS settings is not proper.
+    True: The BIOS settings is proper.
+
+    False: The BIOS settings is not proper.
 
 
 ## DellChecker class
@@ -37,35 +38,36 @@ Using the libsmbios to check the BIOS settings.
 
 ```
 class DellChecker():
-	configure = None
-	def __init__(self, configFile = "")
-	def check(self)
-	def readConfigure(self, configFile = "")
-	def tokenInfo(self, tokenObj, action)
+    configure = None
+    def __init__(self, configFile = "")
+    def check(self)
+    def readConfigure(self, configFile = "")
+    def tokenInfo(self, tokenObj, action)
 ```
 
-####Parameters
-#####configFile
-The full file patch of the configure file.
-If you don't set it. The default configure file patch is
-/usr/share/UbuntuBIOSSettingsChecker/config.
+* Parameters
+  * configFile
 
-#####tokenObj
-The tokenObj come from smbios-token-ctl.
+    The full file patch of the configure file.If you don't set it. The default configure file patch is /usr/share/UbuntuBIOSSettingsChecker/config.
 
-```
-tokenTable = smbios_token.TokenTable()
-tokenObj = tokenTable[smbios_keys]
-```
+  * tokenObj
 
-#####action
-This parameter come from smbios-token-ctl.
+    The tokenObj come from smbios-token-ctl.
 
-"is-bool": the method wil return the value of a bool.
+  ```
+  tokenTable = smbios_token.TokenTable()
+  tokenObj = tokenTable[smbios_keys]
+  ```
 
-"is-string": the method wil return the value of a string.
+  * action
 
-"is-active": the method wil return the active state
+    This parameter come from smbios-token-ctl.
+
+    "is-bool": the method wil return the value of a bool.
+
+    "is-string": the method wil return the value of a string.
+
+    "is-active": the method wil return the active state
 
 
 ### Example 
