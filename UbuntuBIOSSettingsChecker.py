@@ -35,18 +35,32 @@ class DellChecker(CheckerTemplator):
         logging.debug(self.configure["default"])
         for key in self.configure["default"].keys():
             if key != "url":
-                tokenObj = self.tokenTable[int(key)]
-                if type(self.configure["default"][key]["value"]) == bool:
-                    (exit_code, t, value) = self.tokenInfo(tokenObj, "is-bool" )
-                else:
-                    (exit_code, t, value) = self.tokenInfo(tokenObj, "is-string" )
-                
-                if self.configure["default"][key]["value"] != value:
-                    
-                    return False
+                if not self.optionCheck(key, self.configure["default"][key]["value"]):
+                    # TODO: record the fail item
+                    ret = False
 
+        # check the special BIOS settings
         if productName in self.configure.keys():
             logging.info(self.configure[productName])
+            #TODO: check the PCI information
+            for key in self.configure[productName].keys():
+                if key != "pci":
+                    if not self.optionCheck(key, self.configure[productName][key]["value"]):
+                        # TODO: record the fail item
+                        ret = False
+        return ret
+
+    def optionCheck(self, key, value):
+        logging.debug("optionCheck({}, {})".format(key, value))
+        tokenObj = self.tokenTable[int(key)]
+
+        if type(value) == bool:
+            (exit_code, t, v) = self.tokenInfo(tokenObj, "is-bool" )
+        else:
+            (exit_code, t, v) = self.tokenInfo(tokenObj, "is-string" )
+
+        if value != v:
+            return False
 
         return True
 
