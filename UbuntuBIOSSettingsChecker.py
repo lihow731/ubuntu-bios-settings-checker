@@ -4,6 +4,9 @@ import subprocess
 import sys
 import json
 from libsmbios_c import smbios_token
+import logging
+
+logging.basicConfig(level=logging.WARNING)
 
 DEFAULT_CONFIGURE_PATH="/usr/share/UbuntuBIOSSettingsChecker/config"
 
@@ -20,16 +23,16 @@ class DellChecker(CheckerTemplator):
         self.readConfigure(configFile)
         pass
 
-    def check(self):
+    def check(self) -> bool:
         ret = True
         try:
             productName = subprocess.Popen("dmidecode -s system-product-name".split(),stdout=subprocess.PIPE ).stdout.read().strip().decode("utf-8")
         except(e):
-            print("{}".format(e))
+            logging.critical("{}".format(e))
             pass
         
         # check the default settings
-        print(self.configure["default"])
+        logging.debug(self.configure["default"])
         for key in self.configure["default"].keys():
             if key != "url":
                 tokenObj = self.tokenTable[int(key)]
@@ -43,7 +46,7 @@ class DellChecker(CheckerTemplator):
                     return False
 
         if productName in self.configure.keys():
-            print(self.configure[productName])
+            logging.info(self.configure[productName])
 
         return True
 
@@ -95,17 +98,17 @@ class UbuntuBIOSSettingsChecker:
             self.status = -1
             return None
     
-        print("The manufacturer is {}.".format(manufacturer))
+        logging.debug("The manufacturer is {}.".format(manufacturer))
         self.manufacturer = manufacturer
 
         if manufacturer == b"Dell Inc." :
             self.checker = DellChecker(configFile)
         elif manufacturer == b"Hewlett-Packard":
             #self.checker = HPChecker()
-            print("This class don't support {} yet.".format(manufacturer))
+            logging.debug("This class don't support {} yet.".format(manufacturer))
             return None
         else :
-            print("This class don't support {} yet.".format(manufacturer))
+            logging.debug("This class don't support {} yet.".format(manufacturer))
             self.status = -1
             return None
         
